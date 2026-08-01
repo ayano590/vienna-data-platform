@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    container_name: vienna-data-platform
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+      - ENVIRONMENT=development

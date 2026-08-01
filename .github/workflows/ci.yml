@@ -30,13 +30,19 @@ jobs:
           pip install ruff pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      # 4. Ruff ausführen (Linter & Formatter Check)
+      # 4. Ruff ausführen und Code automatisch formatieren
       - name: Run Ruff
         run: |
-          ruff check .
-          ruff format --check .
+          ruff check --fix .
+          ruff format .
 
-      # 5. Pytest ausführen
+      # 5. Geänderten Code automatisch committen und pushen (falls Änderungen vorhanden)
+      - name: Commit and Push Changes
+        uses: stefanzweifel/git-auto-commit-action@main
+        with:
+          commit_message: "style: auto-format code with Ruff [skip ci]"
+
+      # 6. Pytest ausführen
       - name: Run Pytest
         run: |
           pytest
@@ -55,7 +61,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@main
 
-      # 6. Docker Image bauen (ohne Registry Push)
+      # 7. Docker Image bauen (ohne Registry Push)
       - name: Build Docker Image
         uses: docker/build-push-action@main
         with:

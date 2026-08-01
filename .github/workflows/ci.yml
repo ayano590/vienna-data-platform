@@ -59,11 +59,11 @@ jobs:
 
       # Docker Buildx für effizientes Bauen einrichten
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@main
+        uses: docker/setup-buildx-action@v4
 
       # 7. Docker Image bauen (ohne Registry Push)
       - name: Build Docker Image
-        uses: docker/build-push-action@main
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./Dockerfile

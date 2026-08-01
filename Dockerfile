@@ -1,4 +1,4 @@
-FROM python:3.14.6-slim-bookworm AS builder
+FROM python:3.12.13-slim-bookworm AS builder
 
 WORKDIR /app
 
@@ -15,7 +15,7 @@ COPY requirements.txt .
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
 
-FROM python:3.14.6-slim-bookworm AS runtime
+FROM python:3.12.13-slim-bookworm AS runtime
 
 WORKDIR /app
 

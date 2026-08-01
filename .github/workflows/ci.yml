@@ -16,11 +16,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@main
 
-      # 2. Python 3.14 einrichten mit pip Caching
-      - name: Set up Python 3.14
+      # 2. Python 3.12 einrichten mit pip Caching
+      - name: Set up Python 3.12
         uses: actions/setup-python@main
         with:
-          python-version: "3.14"
+          python-version: "3.12"
           cache: "pip"
 
       # 3. Dependencies installieren

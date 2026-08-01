@@ -9,3 +9,30 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - ENVIRONMENT=development
+
+  postgres:
+    image: postgres:18.4-alpine3.24
+    container_name: prefect-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=prefect
+      - POSTGRES_PASSWORD=prefect
+      - POSTGRES_DB=prefect
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+  prefect-server:
+    image: prefecthq/prefect:sha-ef42861-python3.12-conda
+    container_name: prefect-server
+    ports:
+      - "4200:4200"
+    environment:
+      - PREFECT_SERVER__DATABASE__CONNECTION_URL=postgresql+asyncpg://prefect:prefect@postgres:5432/prefect
+      - PREFECT_SERVER__TELEMETRY__ENABLED=false
+    command: prefect server start --host 0.0.0.0
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:

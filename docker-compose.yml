@@ -1,15 +1,4 @@
 services:
-  data-pipeline:
-    build: .
-    container_name: vienna-data-platform
-    ports:
-      - "8000:8000"
-    volumes:
-      - .:/app
-    environment:
-      - PYTHONUNBUFFERED=1
-      - ENVIRONMENT=development
-
   postgres:
     image: postgres:18.4-alpine3.24
     container_name: prefect-postgres
@@ -23,7 +12,7 @@ services:
       - postgres_data:/var/lib/postgresql
 
   prefect-server:
-    image: prefecthq/prefect:sha-ef42861-python3.12-conda
+    image: prefecthq/prefect:sha-05c045c-python3.12
     container_name: prefect-server
     ports:
       - "4200:4200"
@@ -33,6 +22,16 @@ services:
     command: prefect server start --host 0.0.0.0
     depends_on:
       - postgres
+
+  prefect-worker:
+    image: ghcr.io/ayano590/vienna-data-platform:latest
+    container_name: prefect-worker
+    environment:
+      - PREFECT_API_URL=http://prefect-server:4200/api
+      - PREFECT_LOGGING_LEVEL=INFO
+    command: prefect worker start --pool default
+    depends_on:
+      - prefect-server
 
 volumes:
   postgres_data:

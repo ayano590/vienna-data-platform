@@ -36,5 +36,3 @@ USER appuser
 COPY --chown=appuser:appuser . .
 
 EXPOSE 8000
-
-CMD ["python", "app/main.py"]

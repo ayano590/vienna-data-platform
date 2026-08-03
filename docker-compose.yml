@@ -1,5 +1,5 @@
 services:
-  app:
+  data-pipeline:
     build: .
     container_name: vienna-data-platform
     ports:

@@ -18,38 +18,32 @@ jobs:
     steps:
       # 1. Repository auschecken
       - name: Checkout Code
-        uses: actions/checkout@main
+        uses: actions/checkout@v7
 
       # 2. Python 3.12 einrichten mit pip Caching
       - name: Set up Python 3.12
-        uses: actions/setup-python@main
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-          cache: "pip"
+          cache: "uv"
 
-      # 3. Dependencies installieren
+      # 3. uv installieren
+      - name: Install uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9
+
+      # 4 Abhängigkeiten installieren
       - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install ruff pytest
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        run: uv sync --frozen
 
-      # 4. Ruff ausführen und Code automatisch formatieren
+      # 5. Ruff ausführen und Code automatisch formatieren
       - name: Run Ruff
         run: |
-          ruff check --fix .
-          ruff format .
-
-      # 5. Geänderten Code automatisch committen und pushen (falls Änderungen vorhanden)
-      - name: Commit and Push Changes
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          commit_message: "style: auto-format code with Ruff [skip ci]"
+          uv run ruff check .
+          uv run ruff format --check .
 
       # 6. Pytest ausführen
       - name: Run Pytest
-        run: |
-          pytest
+        run: uv run pytest
 
   build-docker:
     name: Build and push Docker Image
@@ -59,7 +53,7 @@ jobs:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
     steps:
       - name: Checkout Code
-        uses: actions/checkout@main
+        uses: actions/checkout@v7
 
       - name: Login to GHCR
         uses: docker/login-action@v4

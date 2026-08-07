@@ -26,6 +26,9 @@ package = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = [
+    "-ra",
+]
 
 [tool.ruff]
 line-length = 100

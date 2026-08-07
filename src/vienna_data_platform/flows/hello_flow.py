@@ -9,5 +9,6 @@ def hello_flow() -> None:
     logger = get_run_logger()
     logger.info(message)
 
+
 if __name__ == "__main__":
     hello_flow()

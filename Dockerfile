@@ -2,37 +2,30 @@ FROM python:3.12.13-slim-bookworm AS builder
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
+RUN pip install --no-cache-dir uv
 
-# Create virtual environment
-RUN python -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
+COPY pyproject.toml uv.lock ./
 
-COPY requirements.txt .
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+RUN uv sync --frozen --no-install-project
+
+COPY . .
+
+RUN uv sync --frozen
 
 
 FROM python:3.12.13-slim-bookworm AS runtime
 
 WORKDIR /app
 
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    PATH="/opt/venv/bin:$PATH"
+COPY --from=builder /app/.venv /app/.venv
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libpq5 \
-    && rm -rf /var/lib/apt/lists/*
+ENV PATH="/app/.venv/bin:$PATH"
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-# Copy virtual environment from builder stage
-COPY --from=builder /opt/venv /opt/venv
+COPY . .
 
 RUN useradd --create-home appuser
 USER appuser
-
-COPY --chown=appuser:appuser . .
 
 EXPOSE 8000

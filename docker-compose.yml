@@ -24,12 +24,12 @@ services:
       - postgres
 
   prefect-worker:
-    image: ghcr.io/ayano590/vienna-data-platform:latest
+    image: prefecthq/prefect:sha-05c045c-python3.12
     container_name: prefect-worker
     environment:
       - PREFECT_API_URL=http://prefect-server:4200/api
       - PREFECT_LOGGING_LEVEL=INFO
-    command: prefect worker start --pool default
+    command: prefect worker start --pool docker-work-pool
     depends_on:
       - prefect-server
 

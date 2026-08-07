@@ -1,0 +1,30 @@
+---
+# Welcome to your prefect.yaml file! You can use this file for
+# storing and managing configuration for deploying your flows.
+# We recommend committing this file to source control along
+# with your flow code.
+
+# Generic metadata about this project
+name: vienna-data-platform
+prefect-version: 3.8.1
+
+build: null
+
+push: null
+
+pull: null
+
+deployments:
+- name: hello-flow
+  version: null
+  tags: []
+  description: "Simple hello flow"
+  schedule: {}
+  flow_name: null
+  entrypoint: src/vienna_data_platform/flows/hello_flow.py:hello_flow
+  parameters: {}
+  work_pool:
+    name: docker-work-pool
+    work_queue_name: docker-worker
+    job_variables:
+      image: ghcr.io/ayano590/vienna-data-platform:sha-606a6ff0577c376bfc1cc98343ff4b340184bf892492366ab5156ed977eb95c0

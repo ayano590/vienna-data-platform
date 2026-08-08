@@ -2,9 +2,6 @@
 
 Prefect setup
 
-first, create the work pool:
-docker compose exec -it prefect-server prefect work-pool create default --type process
-
 Changing to uv package manager
 
 disclaimer: do not use anaconda python environments, as these cause issues in conjunction with uv
@@ -32,9 +29,27 @@ set build, push and pull to null, since prefect does not build the docker images
 add name, description, entrypoint
 for the worker, add the work pool name you used during pool creation
 
+start docker stack and create work pool:
+docker compose up (--build)
+docker compose exec -it prefect-server prefect work-pool create docker-work-pool --type docker
+
 Run prefect commands
 uv run prefect deploy
 uv run prefect deploy -n hello-flow
 uv run prefect deployment run 'hello_flow/hello-flow'  # schedule runs for this deployment
 Disclaimer: if you have an empty prefect.yaml, trying to save the deployment configuration will result in an error.
 either delete your prefect.yaml and try again, or re-initialize prefect
+
+Docker Setup
+
+switching from prefect work pool type "process" to "docker" for isolated flow runs
+create Dockerfile.prefect-worker, install the python lib prefect-docker, and build the image:
+docker build -f Dockerfile.prefect-worker -t prefect-worker:test .
+docker run --rm prefect-worker:test python -c "import prefect_docker; print(prefect_docker)"
+docker run --rm prefect-worker:test prefect worker start --pool docker-work-pool
+
+update docker compose prefect worker to use image
+
+end-to-end test
+docker build -t vienna-data-platform:test .
+docker run --rm vienna-data-platform:test

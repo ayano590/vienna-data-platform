@@ -1,0 +1,3 @@
+FROM prefecthq/prefect:sha-05c045c-python3.12
+
+RUN pip install prefect-docker

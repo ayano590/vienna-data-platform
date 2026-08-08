@@ -24,11 +24,15 @@ services:
       - postgres
 
   prefect-worker:
-    image: prefecthq/prefect:sha-05c045c-python3.12
+    build:
+      context: .
+      dockerfile: Dockerfile.prefect-worker
     container_name: prefect-worker
     environment:
       - PREFECT_API_URL=http://prefect-server:4200/api
       - PREFECT_LOGGING_LEVEL=INFO
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     command: prefect worker start --pool docker-work-pool
     depends_on:
       - prefect-server

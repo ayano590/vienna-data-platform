@@ -4,8 +4,8 @@
 .gitignore
 
 LICENSE
-README.md
 
 Dockerfile
+Dockerfile.prefect-worker
 docker-compose.yml
 .dockerignore

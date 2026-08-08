@@ -4,7 +4,7 @@ WORKDIR /app
 
 RUN pip install --no-cache-dir uv
 
-COPY pyproject.toml uv.lock ./
+COPY pyproject.toml uv.lock README.md ./
 
 RUN uv sync --frozen --no-install-project
 
@@ -27,5 +27,3 @@ COPY . .
 
 RUN useradd --create-home appuser
 USER appuser
-
-EXPOSE 8000

@@ -1,3 +1,5 @@
 FROM prefecthq/prefect:sha-05c045c-python3.12
 
+WORKDIR /opt/prefect/vienna-data-platform
+
 RUN pip install prefect-docker

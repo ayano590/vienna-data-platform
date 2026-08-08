@@ -18,6 +18,7 @@ services:
       - "4200:4200"
     environment:
       - PREFECT_API_DATABASE_CONNECTION_URL=postgresql+asyncpg://prefect:prefect@postgres:5432/prefect
+      - PREFECT_SERVER_EPHEMERAL_ENABLED=false
       - PREFECT_SERVER_ANALYTICS_ENABLED=false
     command: prefect server start --host 0.0.0.0
     depends_on:

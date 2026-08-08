@@ -50,6 +50,28 @@ docker run --rm prefect-worker:test prefect worker start --pool docker-work-pool
 
 update docker compose prefect worker to use image
 
-end-to-end test
+test
 docker build -t vienna-data-platform:test .
 docker run --rm vienna-data-platform:test
+
+docker pull ghcr.io/ayano590/vienna-data-platform:sha-cfa861b
+docker run --rm ghcr.io/ayano590/vienna-data-platform:sha-cfa861b
+change tag in prefect.yaml as well
+
+prefect cannot find docker-work-pool, even though it is visible and active in prefect ui
+uv run prefect config view
+issue: docker prefect service points to localhost, while above command points to cloud
+
+set prefect api url in powershell:
+$env:PREFECT_API_URL="http://localhost:4200/api"
+uv run prefect deployment ls
+docker exec prefect-server prefect config view
+uv run prefect deployment inspect hello_flow/hello-flow
+docker inspect tremendous-bonobo --format '{{range .Config.Env}}{{println .}}{{end}}'
+
+issue: docker starts workflow in its own docker network, while docker compose stack is in the compose network
+docker network ls
+change network in prefect ui under work pool settings
+
+run crashed after fixing network issue
+docker ps -a --filter "ancestor=ghcr.io/ayano590/vienna-data-platform:sha-cfa861b"

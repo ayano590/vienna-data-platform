@@ -17,8 +17,8 @@ services:
     ports:
       - "4200:4200"
     environment:
-      - PREFECT_SERVER__DATABASE__CONNECTION_URL=postgresql+asyncpg://prefect:prefect@postgres:5432/prefect
-      - PREFECT_SERVER__TELEMETRY__ENABLED=false
+      - PREFECT_API_DATABASE_CONNECTION_URL=postgresql+asyncpg://prefect:prefect@postgres:5432/prefect
+      - PREFECT_SERVER_ANALYTICS_ENABLED=false
     command: prefect server start --host 0.0.0.0
     depends_on:
       - postgres

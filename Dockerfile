@@ -23,7 +23,7 @@ ENV PATH="/opt/prefect/vienna-data-platform/.venv/bin:$PATH"
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-COPY --from=builder /opt/prefect/vienna-data-platform ./
+COPY --from=builder /opt/prefect/vienna-data-platform /opt/prefect/vienna-data-platform
 
 RUN useradd --create-home appuser
 USER appuser

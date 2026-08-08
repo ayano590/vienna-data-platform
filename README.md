@@ -75,3 +75,5 @@ change network in prefect ui under work pool settings
 
 run crashed after fixing network issue
 docker ps -a --filter "ancestor=ghcr.io/ayano590/vienna-data-platform:sha-cfa861b"
+
+changed the docker stack folder structure

@@ -27,4 +27,4 @@ deployments:
     name: docker-work-pool
     work_queue_name: docker-worker
     job_variables:
-      image: ghcr.io/ayano590/vienna-data-platform:sha-cfa861b
+      image: ghcr.io/ayano590/vienna-data-platform:sha-192ce21
